@@ -1,1 +1,1 @@
-# lualnews
+# luanews
