@@ -1,5 +1,6 @@
 package br.edu.ufrn.brenov.luanews;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void register(View view) {
-        // TODO
+        Intent intent =  new Intent(this, RegisterActivity.class);
+        startActivity(intent);
     }
 }
