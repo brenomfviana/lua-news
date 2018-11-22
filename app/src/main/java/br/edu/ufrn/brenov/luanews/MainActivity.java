@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
         }
         // Check if the user is registered
         if (username.equals("admin") && password.equals("admin")) {
-            Toast.makeText(this,"The user logged into the Lua News.",Toast.LENGTH_SHORT).show();
+            Intent intent =  new Intent(this, HomeActivity.class);
+            startActivity(intent);
         } else {
             Toast.makeText(this,"Wrong username or password!",Toast.LENGTH_SHORT).show();
         }
