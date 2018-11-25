@@ -1,9 +1,9 @@
-package br.edu.ufrn.brenov.luanews.database.auth;
+package br.edu.ufrn.brenov.luanews.controller.database.auth;
 
 import android.content.Context;
 
 import org.json.*;
-import br.edu.ufrn.brenov.luanews.domain.User;
+import br.edu.ufrn.brenov.luanews.model.User;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;

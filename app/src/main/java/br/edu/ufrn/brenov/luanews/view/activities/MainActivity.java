@@ -1,8 +1,7 @@
-package br.edu.ufrn.brenov.luanews.activities;
+package br.edu.ufrn.brenov.luanews.view.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,9 +13,9 @@ import org.json.JSONException;
 import java.io.IOException;
 
 import br.edu.ufrn.brenov.luanews.R;
-import br.edu.ufrn.brenov.luanews.database.auth.Auth;
-import br.edu.ufrn.brenov.luanews.dialogs.RegistrationDialog;
-import br.edu.ufrn.brenov.luanews.domain.User;
+import br.edu.ufrn.brenov.luanews.controller.database.auth.Auth;
+import br.edu.ufrn.brenov.luanews.view.dialogs.RegistrationDialog;
+import br.edu.ufrn.brenov.luanews.model.User;
 
 public class MainActivity extends AppCompatActivity {
 

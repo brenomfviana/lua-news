@@ -1,4 +1,4 @@
-package br.edu.ufrn.brenov.luanews.dialogs;
+package br.edu.ufrn.brenov.luanews.view.dialogs;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -9,14 +9,14 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 
-public class OverwriteUserDialog extends DialogFragment implements DialogInterface.OnClickListener {
+public class RegistrationDialog extends DialogFragment implements DialogInterface.OnClickListener {
 
     private OnClickListener listener;
 
     public static void show(FragmentManager manager, OnClickListener listener) {
-        OverwriteUserDialog dialog = new OverwriteUserDialog();
+        RegistrationDialog dialog = new RegistrationDialog();
         dialog.listener = listener;
-        dialog.show(manager, "OverwriteUserDialog");
+        dialog.show(manager, "RegistrationDialog");
     }
 
     @NonNull
@@ -24,7 +24,7 @@ public class OverwriteUserDialog extends DialogFragment implements DialogInterfa
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Warning")
-                .setMessage("Do you want overwrite the current user?")
+                .setMessage("A user has already been registered, do you want to continue?")
                 .setPositiveButton("Yes",this)
                 .setNegativeButton("No", this);
         return builder.create();

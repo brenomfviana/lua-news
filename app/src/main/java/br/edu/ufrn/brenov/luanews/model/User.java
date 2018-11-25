@@ -1,4 +1,4 @@
-package br.edu.ufrn.brenov.luanews.domain;
+package br.edu.ufrn.brenov.luanews.model;
 
 public class User {
 

@@ -1,4 +1,4 @@
-package br.edu.ufrn.brenov.luanews.activities;
+package br.edu.ufrn.brenov.luanews.view.activities;
 
 import android.os.Bundle;
 

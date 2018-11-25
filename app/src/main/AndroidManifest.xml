@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".view.activities.SplashActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,37 +19,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name=".view.activities.MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activities.RegisterActivity"
+            android:name=".view.activities.RegisterActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".activities.HomeActivity"
+            android:name=".view.activities.HomeActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.BaseActivity"
+            android:name=".view.activities.BaseActivity"
             android:label="@string/title_activity_base"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.DigitalNewspapersActivity"
+            android:name=".view.activities.DigitalNewspapersActivity"
             android:label="@string/title_activity_digital_newspapers"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.FavNewspapersActivity"
+            android:name=".view.activities.FavNewspapersActivity"
             android:label="@string/title_activity_fav_newspapers"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.SavedNewsActivity"
+            android:name=".view.activities.SavedNewsActivity"
             android:label="@string/title_activity_saved_news"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.ReadLaterActivity"
+            android:name=".view.activities.ReadLaterActivity"
             android:label="@string/title_activity_read_later"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activities.AboutActivity"
+            android:name=".view.activities.AboutActivity"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

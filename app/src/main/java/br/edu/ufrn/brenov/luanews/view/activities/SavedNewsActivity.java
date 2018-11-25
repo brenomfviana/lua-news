@@ -1,17 +1,17 @@
-package br.edu.ufrn.brenov.luanews.activities;
+package br.edu.ufrn.brenov.luanews.view.activities;
 
 import android.os.Bundle;
 
 import br.edu.ufrn.brenov.luanews.R;
 
-public class FavNewspapersActivity extends BaseActivity {
+public class SavedNewsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fav_newspapers);
+        setContentView(R.layout.activity_saved_news);
         super.onCreateDrawer();
         // Update checked item
-        this.navigationView.getMenu().getItem(2).setChecked(true);
+        this.navigationView.getMenu().getItem(3).setChecked(true);
     }
 }
