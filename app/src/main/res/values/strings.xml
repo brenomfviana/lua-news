@@ -7,4 +7,10 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_digital_newspapers">Digital Newspapers</string>
+    <string name="title_activity_fav_newspapers">Favorite Newspapers</string>
+    <string name="title_activity_saved_news">Saved News</string>
+    <string name="title_activity_read_later">Read Later</string>
+    <string name="title_activity_about">About Lua News</string>
+    <string name="title_activity_base">BaseActivity</string>
 </resources>

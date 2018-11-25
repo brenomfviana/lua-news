@@ -27,7 +27,31 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".BaseActivity"
+            android:label="@string/title_activity_base"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".DigitalNewspapersActivity"
+            android:label="@string/title_activity_digital_newspapers"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FavNewspapersActivity"
+            android:label="@string/title_activity_fav_newspapers"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SavedNewsActivity"
+            android:label="@string/title_activity_saved_news"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ReadLaterActivity"
+            android:label="@string/title_activity_read_later"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/title_activity_about"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
