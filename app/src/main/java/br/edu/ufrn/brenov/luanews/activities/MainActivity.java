@@ -7,7 +7,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
+import java.io.IOException;
+
 import br.edu.ufrn.brenov.luanews.R;
+import br.edu.ufrn.brenov.luanews.database.auth.Auth;
+import br.edu.ufrn.brenov.luanews.domain.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,19 +36,34 @@ public class MainActivity extends AppCompatActivity {
         String password = this.edtPassword.getText().toString();
         // Check if the fields are empty
         if (username.equals("")) {
-            edtUsername.setError("This field must be !");
+            edtUsername.setError("Enter the username to register!");
             return;
-        }
-        if (password.equals("")) {
-            edtPassword.setError("....");
+        } else if (password.equals("")) {
+            edtPassword.setError("Enter the password to register!");
             return;
-        }
-        // Check if the user is registered
-        if (username.equals("admin") && password.equals("admin")) {
-            Intent intent =  new Intent(this, HomeActivity.class);
-            startActivity(intent);
         } else {
-            Toast.makeText(this,"Wrong username or password!",Toast.LENGTH_SHORT).show();
+            try {
+                // Get registered user
+                User user = Auth.getUser(this);
+                // Check if the user was registered
+                if (user == null) {
+                    Toast.makeText(this,"No user has been registered\n!",Toast.LENGTH_SHORT).show();
+                } else {
+                    if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
+                        Intent intent =  new Intent(this, HomeActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(this,"Wrong username or password!",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            } catch (JSONException e) {
+                Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            } catch (IOException e) {
+                Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+
         }
     }
 

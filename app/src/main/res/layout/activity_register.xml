@@ -25,7 +25,7 @@
 
 
     <Button
-        android:id="@+id/register"
+        android:id="@+id/cancel"
         android:layout_width="0dp"
         android:layout_height="64dp"
         android:layout_marginBottom="32dp"
@@ -35,21 +35,22 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/login"
+        app:layout_constraintEnd_toEndOf="@+id/register"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="@+id/login" />
+        app:layout_constraintStart_toStartOf="@+id/register" />
 
     <Button
-        android:id="@+id/login"
+        android:id="@+id/register"
         android:layout_width="0dp"
         android:layout_height="66dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/colorAccent"
+        android:onClick="register"
         android:text="Register"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/register"
+        app:layout_constraintBottom_toTopOf="@+id/cancel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
