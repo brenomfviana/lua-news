@@ -1,9 +1,11 @@
-package br.edu.ufrn.brenov.luanews;
+package br.edu.ufrn.brenov.luanews.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+
+import br.edu.ufrn.brenov.luanews.R;
 
 public class RegisterActivity extends AppCompatActivity {
 

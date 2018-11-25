@@ -1,9 +1,11 @@
-package br.edu.ufrn.brenov.luanews;
+package br.edu.ufrn.brenov.luanews.activities;
 
 import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import br.edu.ufrn.brenov.luanews.R;
 
 public class SplashActivity extends AppCompatActivity {
 
