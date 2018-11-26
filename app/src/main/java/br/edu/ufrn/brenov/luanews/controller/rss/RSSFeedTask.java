@@ -48,9 +48,4 @@ public class RSSFeedTask extends AsyncTask<String, Void, SyndFeed> {
         }
         return null;
     }
-
-    @Override
-    protected void onPostExecute(SyndFeed feed) {
-        Toast.makeText(this.context, feed.getTitle(), Toast.LENGTH_SHORT).show();
-    }
 }

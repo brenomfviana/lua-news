@@ -5,4 +5,5 @@
     <color name="colorAccent">#4dffc9</color>
     <color name="textColorEditText">#99bcbc</color>
     <color name="backgroundColorEditText">#005757</color>
+    <color name="backgroundSearch">#3f8787</color>
 </resources>

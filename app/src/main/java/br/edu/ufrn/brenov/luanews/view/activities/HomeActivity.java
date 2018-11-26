@@ -1,10 +1,16 @@
 package br.edu.ufrn.brenov.luanews.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 
-import br.edu.ufrn.brenov.luanews.R;
+import com.sun.syndication.feed.synd.SyndEntry;
 
-public class HomeActivity extends BaseActivity {
+import br.edu.ufrn.brenov.luanews.R;
+import br.edu.ufrn.brenov.luanews.view.fragments.NewsFragment;
+
+public class HomeActivity extends BaseActivity implements NewsFragment.OnItemClickListener {
+
+    private NewsFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,5 +20,14 @@ public class HomeActivity extends BaseActivity {
         // Update title
         setTitle("");
         this.navigationView.getMenu().getItem(0).setChecked(true);
+        // Get fragment
+        this.fragment = (NewsFragment) getSupportFragmentManager().findFragmentById(R.id.home_fragment);
+    }
+
+    @Override
+    public void onClick(SyndEntry entry) {
+        Intent intent = new Intent(this, NewsActivity.class);
+        intent.putExtra("news_title", entry.getTitle());
+        startActivity(intent);
     }
 }
