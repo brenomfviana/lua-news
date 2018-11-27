@@ -2,7 +2,6 @@ package br.edu.ufrn.brenov.luanews.controller.rss;
 
 import android.content.Context;
 
-import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import java.util.ArrayList;
 import java.util.List;

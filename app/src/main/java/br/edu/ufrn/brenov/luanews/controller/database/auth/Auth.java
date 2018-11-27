@@ -1,7 +1,6 @@
 package br.edu.ufrn.brenov.luanews.controller.database.auth;
 
 import android.content.Context;
-
 import org.json.*;
 import br.edu.ufrn.brenov.luanews.model.User;
 import java.io.IOException;
@@ -44,7 +43,8 @@ public class Auth {
         json.put(USERNAME, user.getUsername());
         json.put(PASSWORD, user.getPassword());
         // Write file
-        OutputStreamWriter out = new OutputStreamWriter(context.openFileOutput(FILE_NAME, Context.MODE_PRIVATE));
+        OutputStreamWriter out = new OutputStreamWriter(context.openFileOutput(FILE_NAME,
+                Context.MODE_PRIVATE));
         try (PrintWriter pw = new PrintWriter(out)) {
             pw.write(json.toString());
             pw.flush();
