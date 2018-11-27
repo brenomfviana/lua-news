@@ -4,10 +4,12 @@ public class RSSChannel {
 
     private String link;
     private String name;
+    private boolean fav;
 
-    public RSSChannel(String link, String name) {
+    public RSSChannel(String link, String name, boolean fav) {
         this.link = link;
         this.name = name;
+        this.fav = fav;
     }
 
     public String getLink() {
@@ -26,11 +28,20 @@ public class RSSChannel {
         this.name = name;
     }
 
+    public boolean isFav() {
+        return fav;
+    }
+
+    public void setFav(boolean fav) {
+        this.fav = fav;
+    }
+
     @Override
     public String toString() {
         return "RSSChannel{" +
                 "link='" + this.link + '\'' +
                 ", name='" + this.name + '\'' +
+                ", fav=" + this.fav +
                 '}';
     }
 }

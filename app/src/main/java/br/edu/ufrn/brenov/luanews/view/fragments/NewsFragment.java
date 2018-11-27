@@ -43,7 +43,7 @@ public class NewsFragment extends Fragment {
         //
         RSSChannel channel =
                 new RSSChannel("http://feeds.bbci.co.uk/news/world/rss.xml",
-                        "BBC News - World");
+                        "BBC News - World", false);
         this.channels = new ArrayList<>();
         this.channels.add(channel);
         this.feeds = FeedManager.update(channels, getContext());

@@ -2,11 +2,9 @@ package br.edu.ufrn.brenov.luanews.controller.database.rss;
 
 import android.content.Context;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,10 +18,10 @@ import br.edu.ufrn.brenov.luanews.model.RSSChannel;
 public class RSSDatabase {
 
     private final static String FILE_NAME = "luanews_rss_database.json";
-    private final static String CREATE = "{ \"channels\": [ ] }";
     private final static String CHANNELS = "channels";
     private final static String LINK = "link";
     private final static String NAME = "name";
+    private final static String FAV = "fav";
 
     private final static int CHANNEL_ADDDED = 0;
     private final static int CHANNEL_ALREADY_ADDED = 1;
@@ -33,7 +31,7 @@ public class RSSDatabase {
 
     private final static int INVALID_CHANNEL = -1;
 
-    public static void createDatabase(Context context) throws JSONException, IOException {
+    private static void createDatabase(Context context) throws JSONException, IOException {
         // Remove item
         JSONObject json = new JSONObject();
         json.put(CHANNELS, new JSONArray());
@@ -63,7 +61,6 @@ public class RSSDatabase {
             while(scanner.hasNextLine()){
                 String line = scanner.nextLine();
                 sb.append(line).append(System.lineSeparator());
-                Log.i("rss", line);
             }
             json = new JSONObject(sb.toString());
         }
@@ -75,7 +72,7 @@ public class RSSDatabase {
             JSONArray array = json.getJSONArray(CHANNELS);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jo = array.getJSONObject(i);
-                channels.add(new RSSChannel(jo.getString(LINK), jo.getString(NAME)));
+                channels.add(new RSSChannel(jo.getString(LINK), jo.getString(NAME), jo.getBoolean(FAV)));
             }
             return channels;
         }
@@ -113,6 +110,7 @@ public class RSSDatabase {
             JSONObject jo = new JSONObject();
             jo.put(LINK, rss.getLink());
             jo.put(NAME, rss.getName());
+            jo.put(FAV, rss.isFav());
             json.getJSONArray(CHANNELS).put(jo);
             // Write file
             OutputStreamWriter out = new OutputStreamWriter(context.openFileOutput(FILE_NAME,
@@ -178,6 +176,57 @@ public class RSSDatabase {
             return CHANNEL_REMOVED;
         } else {
             return CHANNEL_NOT_ADDED;
+        }
+    }
+
+    public static void fav(RSSChannel rss, Context context) throws JSONException, IOException {
+        // Check if the channel is invalid
+        if (rss.getLink().equals("") || rss.getName().equals("")) {
+            return;
+        }
+        // Check if the channel was already added
+        List<RSSChannel> database = getRSSChannels(context);
+        boolean contains = false;
+        for (RSSChannel channel : database) {
+            if (channel.getLink().equals(rss.getLink())) {
+                contains = true;
+                break;
+            }
+        }
+        if (contains) {
+            // Read file
+            JSONObject json;
+            InputStreamReader in = new InputStreamReader(context.openFileInput(FILE_NAME));
+            try(Scanner scanner = new Scanner(in)) {
+                StringBuilder sb = new StringBuilder();
+                // Get next line
+                while(scanner.hasNextLine()){
+                    String line = scanner.nextLine();
+                    sb.append(line).append(System.lineSeparator());
+                    Log.i("rss", line);
+                }
+                json = new JSONObject(sb.toString());
+            }
+            // Overwrite object
+            JSONArray array = json.getJSONArray(CHANNELS);
+            int index = -1;
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jo = array.getJSONObject(i);
+                if (jo.get(LINK).equals(rss.getLink())) {
+                    index = i;
+                    break;
+                }
+            }
+            if (index > -1) {
+                array.getJSONObject(index).put(FAV, rss.isFav());
+            }
+            // Write file
+            OutputStreamWriter out = new OutputStreamWriter(context.openFileOutput(FILE_NAME,
+                    Context.MODE_PRIVATE));
+            try (PrintWriter pw = new PrintWriter(out)) {
+                pw.write(json.toString());
+                pw.flush();
+            }
         }
     }
 }
