@@ -23,16 +23,19 @@ public class RSSDatabase {
     private final static String NAME = "name";
     private final static String FAV = "fav";
 
-    private final static int CHANNEL_ADDDED = 0;
+    private final static int CHANNEL_ADDED = 0;
     private final static int CHANNEL_ALREADY_ADDED = 1;
 
     private final static int CHANNEL_REMOVED = 2;
     private final static int CHANNEL_NOT_ADDED = 3;
 
+    private final static int CHANNEL_FAV = 4;
+    private final static int CHANNEL_NOT_FAV = 5;
+
     private final static int INVALID_CHANNEL = -1;
 
     private static void createDatabase(Context context) throws JSONException, IOException {
-        // Remove item
+        // Create object
         JSONObject json = new JSONObject();
         json.put(CHANNELS, new JSONArray());
         // Write file
@@ -64,7 +67,7 @@ public class RSSDatabase {
             }
             json = new JSONObject(sb.toString());
         }
-        // Check if the user was registered
+        // Check if the rss channel was registered
         if (json == null) {
             return null;
         } else {
@@ -102,7 +105,6 @@ public class RSSDatabase {
                 while(scanner.hasNextLine()){
                     String line = scanner.nextLine();
                     sb.append(line).append(System.lineSeparator());
-                    Log.i("rss", line);
                 }
                 json = new JSONObject(sb.toString());
             }
@@ -119,7 +121,7 @@ public class RSSDatabase {
                 pw.write(json.toString());
                 pw.flush();
             }
-            return CHANNEL_ADDDED;
+            return CHANNEL_ADDED;
         } else {
             return CHANNEL_ALREADY_ADDED;
         }
@@ -149,7 +151,6 @@ public class RSSDatabase {
                 while(scanner.hasNextLine()){
                     String line = scanner.nextLine();
                     sb.append(line).append(System.lineSeparator());
-                    Log.i("rss", line);
                 }
                 json = new JSONObject(sb.toString());
             }
@@ -165,24 +166,25 @@ public class RSSDatabase {
             }
             if (index > -1) {
                 array.remove(index);
+                // Write file
+                OutputStreamWriter out = new OutputStreamWriter(context.openFileOutput(FILE_NAME,
+                        Context.MODE_PRIVATE));
+                try (PrintWriter pw = new PrintWriter(out)) {
+                    pw.write(json.toString());
+                    pw.flush();
+                }
+                return CHANNEL_REMOVED;
             }
-            // Write file
-            OutputStreamWriter out = new OutputStreamWriter(context.openFileOutput(FILE_NAME,
-                    Context.MODE_PRIVATE));
-            try (PrintWriter pw = new PrintWriter(out)) {
-                pw.write(json.toString());
-                pw.flush();
-            }
-            return CHANNEL_REMOVED;
+            return CHANNEL_NOT_ADDED;
         } else {
             return CHANNEL_NOT_ADDED;
         }
     }
 
-    public static void fav(RSSChannel rss, Context context) throws JSONException, IOException {
+    public static int fav(RSSChannel rss, Context context) throws JSONException, IOException {
         // Check if the channel is invalid
         if (rss.getLink().equals("") || rss.getName().equals("")) {
-            return;
+            return INVALID_CHANNEL;
         }
         // Check if the channel was already added
         List<RSSChannel> database = getRSSChannels(context);
@@ -212,21 +214,25 @@ public class RSSDatabase {
             int index = -1;
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jo = array.getJSONObject(i);
-                if (jo.get(LINK).equals(rss.getLink())) {
+                if (jo.getString(LINK).equals(rss.getLink())) {
                     index = i;
                     break;
                 }
             }
             if (index > -1) {
                 array.getJSONObject(index).put(FAV, rss.isFav());
-            }
-            // Write file
-            OutputStreamWriter out = new OutputStreamWriter(context.openFileOutput(FILE_NAME,
-                    Context.MODE_PRIVATE));
-            try (PrintWriter pw = new PrintWriter(out)) {
-                pw.write(json.toString());
-                pw.flush();
+                // Write file
+                OutputStreamWriter out = new OutputStreamWriter(context.openFileOutput(FILE_NAME,
+                        Context.MODE_PRIVATE));
+                try (PrintWriter pw = new PrintWriter(out)) {
+                    pw.write(json.toString());
+                    pw.flush();
+                }
+                return CHANNEL_FAV;
+            } else {
+                return CHANNEL_NOT_FAV;
             }
         }
+        return CHANNEL_NOT_FAV;
     }
 }
