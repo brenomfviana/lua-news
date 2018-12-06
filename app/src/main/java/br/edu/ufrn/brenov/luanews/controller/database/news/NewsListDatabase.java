@@ -1,6 +1,8 @@
 package br.edu.ufrn.brenov.luanews.controller.database.news;
 
 import android.content.Context;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +19,9 @@ import br.edu.ufrn.brenov.luanews.model.NewsList;
 
 public class NewsListDatabase {
 
+    public final static int ACTION_ADD = 0;
+    public final static int ACTION_UPDATE = 1;
+
     private final static String FILE_NAME = "luanews_newslist_database.json";
     private final static String NEWS_LIST = "news_list";
 
@@ -30,11 +35,12 @@ public class NewsListDatabase {
     private final static String DESCRIPTION = "description";
     private final static String DATE = "date";
 
-    private final static int LIST_ADDED = 0;
-    private final static int LIST_REMOVED = 1;
-    private final static int LIST_NOT_REMOVED = 2;
-    private final static int LIST_UPDATED = 3;
-    private final static int INVALID_LIST = -1;
+    public final static int LIST_ADDED = 0;
+    public final static int LIST_REMOVED = 1;
+    public final static int LIST_NOT_REMOVED = 2;
+    public final static int LIST_UPDATED = 3;
+    public final static int LIST_NOT_UPDATED = 4;
+    public final static int INVALID_LIST = -1;
 
     private static void createDatabase(Context context) throws JSONException, IOException {
         // Create object
@@ -49,14 +55,14 @@ public class NewsListDatabase {
         }
     }
 
-    public static List<NewsList> getNewsList(Context context) throws JSONException, IOException {
+    public static List<NewsList> getNewsLists(Context context) throws JSONException, IOException {
         // Open file
         InputStreamReader in = null;
         try {
             in = new InputStreamReader(context.openFileInput(FILE_NAME));
         } catch (FileNotFoundException ex) {
             createDatabase(context);
-            return getNewsList(context);
+            return getNewsLists(context);
         }
         // Read file
         JSONObject json;
@@ -95,7 +101,7 @@ public class NewsListDatabase {
 
     public static int add(String name, List<News> newslist, Context context) throws JSONException, IOException {
         // Check if the news list is invalid
-        if (name.equals("") || newslist.isEmpty()) {
+        if (name.equals("")) {
             return INVALID_LIST;
         }
         // Read file
@@ -114,11 +120,11 @@ public class NewsListDatabase {
         JSONObject jo = new JSONObject();
         jo.put(NAME, name);
         // Get ID
-        List<NewsList> nl = getNewsList(context);
-        if (newslist.isEmpty()) {
+        List<NewsList> nl = getNewsLists(context);
+        if (nl.isEmpty()) {
             jo.put(ID, 0);
         } else {
-            jo.put(ID, nl.get(newslist.size() - 1).getId() + 1);
+            jo.put(ID, nl.get(nl.size() - 1).getId() + 1);
         }
         // Convert list
         jo.put(NEWS, new JSONArray());
@@ -145,8 +151,7 @@ public class NewsListDatabase {
 
     public static int remove(NewsList newslist, Context context) throws JSONException, IOException {
         // Check if the news list is invalid
-        if (newslist.getId() < 0 || newslist.getName().equals("") ||
-                newslist.getNewslist().isEmpty()) {
+        if (newslist.getId() < 0 || newslist.getName().equals("")) {
             return INVALID_LIST;
         }
         // Read file
@@ -187,8 +192,7 @@ public class NewsListDatabase {
 
     public static int update(NewsList newslist, Context context) throws JSONException, IOException {
         // Check if the news list is invalid
-        if (newslist.getId() < 0 || newslist.getName().equals("") ||
-                newslist.getNewslist().isEmpty()) {
+        if (newslist.getId() < 0 || newslist.getName().equals("")) {
             return INVALID_LIST;
         }
         // Read file
@@ -213,28 +217,33 @@ public class NewsListDatabase {
                 break;
             }
         }
-        JSONArray news = json.getJSONArray(NEWS);
-        // Remove all
-        while (news.length() > 0) {
-            news.remove(0);
+        if (index > -1) {
+            JSONObject n = array.getJSONObject(index);
+            n.put(NAME, newslist.getName());
+            JSONArray news = n.getJSONArray(NEWS);
+            // Remove all
+            while (news.length() > 0) {
+                news.remove(0);
+            }
+            // Update list
+            for (News ne : newslist.getNewslist()) {
+                JSONObject j = new JSONObject();
+                j.put(LINK, ne.getLink());
+                j.put(TITLE, ne.getTitle());
+                j.put(AUTHOR, ne.getAuthor());
+                j.put(DESCRIPTION, ne.getDescription());
+                j.put(DATE, ne.getPublishedDate());
+                news.put(j);
+            }
+            // Write file
+            OutputStreamWriter out = new OutputStreamWriter(context.openFileOutput(FILE_NAME,
+                    Context.MODE_PRIVATE));
+            try (PrintWriter pw = new PrintWriter(out)) {
+                pw.write(json.toString());
+                pw.flush();
+            }
+            return LIST_UPDATED;
         }
-        // Update list
-        for (News ne : newslist.getNewslist()) {
-            JSONObject j = new JSONObject();
-            j.put(LINK, ne.getLink());
-            j.put(TITLE, ne.getTitle());
-            j.put(AUTHOR, ne.getAuthor());
-            j.put(DESCRIPTION, ne.getDescription());
-            j.put(DATE, ne.getPublishedDate());
-            news.put(j);
-        }
-        // Write file
-        OutputStreamWriter out = new OutputStreamWriter(context.openFileOutput(FILE_NAME,
-                Context.MODE_PRIVATE));
-        try (PrintWriter pw = new PrintWriter(out)) {
-            pw.write(json.toString());
-            pw.flush();
-        }
-        return LIST_UPDATED;
+        return LIST_NOT_UPDATED;
     }
 }

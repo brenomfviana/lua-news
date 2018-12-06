@@ -14,7 +14,8 @@ import br.edu.ufrn.brenov.luanews.controller.database.rss.RSSDatabase;
 import br.edu.ufrn.brenov.luanews.model.RSSChannel;
 import br.edu.ufrn.brenov.luanews.view.adapters.RSSChannelAdapter;
 
-public class DigitalNewspapersActivity extends BaseActivity implements RSSChannelAdapter.OnClickFavListener, RSSChannelAdapter.OnClickRemoveListener {
+public class DigitalNewspapersActivity extends BaseActivity implements RSSChannelAdapter.OnClickFavListener,
+        RSSChannelAdapter.OnClickRemoveListener {
 
     private ListView list;
     private List<RSSChannel> channels;
@@ -62,14 +63,14 @@ public class DigitalNewspapersActivity extends BaseActivity implements RSSChanne
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.digital_newspapers_menu,menu);
+        getMenuInflater().inflate(R.menu.general_menu,menu);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_newspaper:
+            case R.id.add_item:
                 startActivity(new Intent(this, AddNewspaperActivity.class));
                 return true;
             default:

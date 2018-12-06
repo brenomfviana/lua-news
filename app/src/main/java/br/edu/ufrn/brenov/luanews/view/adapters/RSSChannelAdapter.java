@@ -50,7 +50,7 @@ public class RSSChannelAdapter extends BaseAdapter {
         view = LayoutInflater.from(context).inflate(R.layout.item, viewGroup, false);
         TextView title = view.findViewById(R.id.item_text);
         title.setText(this.items.get(i).getName());
-        final ImageView fav = view.findViewById(R.id.item_fav);
+        ImageView fav = view.findViewById(R.id.item_fav);
         if (items.get(i).isFav()) {
             fav.setImageResource(R.drawable.ic_favorite_black_24dp);
         } else {

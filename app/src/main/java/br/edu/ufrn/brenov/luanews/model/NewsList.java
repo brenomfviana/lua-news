@@ -1,5 +1,6 @@
 package br.edu.ufrn.brenov.luanews.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NewsList {
@@ -12,6 +13,31 @@ public class NewsList {
         this.id = id;
         this.name = name;
         this.newslist = newslist;
+        if (newslist == null) {
+            this.newslist = new ArrayList<>();
+        }
+    }
+
+    public void add(News news) {
+        this.newslist.add(news);
+    }
+
+    public void remove(News news) {
+        int i = 0;
+        for (News n : this.newslist) {
+            if (n.getLink().equals(news.getLink())) {
+                break;
+            }
+            i++;
+        }
+        this.newslist.remove(i);
+    }
+
+    public boolean isEmpty() {
+        if (this.newslist == null) {
+            this.newslist = new ArrayList<>();
+        }
+        return this.newslist.isEmpty();
     }
 
     public int getId() {

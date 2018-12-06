@@ -61,8 +61,8 @@ public class AddNewspaperActivity extends AppCompatActivity {
                     case RSSDatabase.CHANNEL_ALREADY_ADDED:
                         edtRSSFeedLink.setError("This RSS Feed already registered!");
                         break;
-                    case RSSDatabase.INVALID_CHANNEL:
-                        Toast.makeText(this, "Error: Invalid RSS Feed.", Toast.LENGTH_SHORT).show();
+                    default:
+                        Toast.makeText(this, "The RSS Feed could not be recorded.", Toast.LENGTH_SHORT).show();
                         break;
                 }
             } catch (JSONException e) {
