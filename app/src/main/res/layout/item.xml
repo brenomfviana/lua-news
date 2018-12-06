@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/item_text"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:paddingLeft="14dp"
+        android:paddingRight="80dp"
+        android:text="text"
+        style="?android:textAppearanceMedium" />
+
+    <ImageView
+        android:id="@+id/item_fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        android:layout_alignRight="@id/item_text"
+        android:layout_alignBottom="@id/item_text"
+        app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
+
+    <ImageView
+        android:id="@+id/item_remove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/item_fav"
+        android:layout_alignBottom="@id/item_text"
+        android:layout_marginLeft="-38dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+
+</RelativeLayout>

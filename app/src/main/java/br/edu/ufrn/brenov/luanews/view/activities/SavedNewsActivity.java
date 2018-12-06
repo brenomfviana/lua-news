@@ -11,7 +11,7 @@ public class SavedNewsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_news);
         super.onCreateDrawer();
-        // Update checked item
+        // Update checked news_item
         this.navigationView.getMenu().getItem(3).setChecked(true);
     }
 }

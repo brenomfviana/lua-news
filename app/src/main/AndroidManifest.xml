@@ -56,7 +56,9 @@
             android:name=".view.activities.AboutActivity"
             android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.activities.NewsActivity"></activity>
+        <activity android:name=".view.activities.NewsActivity" />
+        <activity android:name=".view.activities.AddNewspaperActivity"
+            android:label="@string/title_activity_add_newspapers" />
     </application>
 
 </manifest>

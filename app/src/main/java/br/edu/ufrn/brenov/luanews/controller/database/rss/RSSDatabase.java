@@ -23,16 +23,16 @@ public class RSSDatabase {
     private final static String NAME = "name";
     private final static String FAV = "fav";
 
-    private final static int CHANNEL_ADDED = 0;
-    private final static int CHANNEL_ALREADY_ADDED = 1;
+    public final static int CHANNEL_ADDED = 0;
+    public final static int CHANNEL_ALREADY_ADDED = 1;
 
-    private final static int CHANNEL_REMOVED = 2;
-    private final static int CHANNEL_NOT_ADDED = 3;
+    public final static int CHANNEL_REMOVED = 2;
+    public final static int CHANNEL_NOT_ADDED = 3;
 
-    private final static int CHANNEL_FAV = 4;
-    private final static int CHANNEL_NOT_FAV = 5;
+    public final static int CHANNEL_FAV_CHANGED = 4;
+    public final static int CHANNEL_FAV_NO_CHANGED = 5;
 
-    private final static int INVALID_CHANNEL = -1;
+    public final static int INVALID_CHANNEL = -1;
 
     private static void createDatabase(Context context) throws JSONException, IOException {
         // Create object
@@ -228,11 +228,11 @@ public class RSSDatabase {
                     pw.write(json.toString());
                     pw.flush();
                 }
-                return CHANNEL_FAV;
+                return CHANNEL_FAV_CHANGED;
             } else {
-                return CHANNEL_NOT_FAV;
+                return CHANNEL_FAV_CHANGED;
             }
         }
-        return CHANNEL_NOT_FAV;
+        return CHANNEL_FAV_NO_CHANGED;
     }
 }

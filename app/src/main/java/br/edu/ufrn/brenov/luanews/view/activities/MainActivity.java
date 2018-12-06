@@ -7,11 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import org.json.JSONException;
-
 import java.io.IOException;
-
 import br.edu.ufrn.brenov.luanews.R;
 import br.edu.ufrn.brenov.luanews.controller.database.auth.Auth;
 import br.edu.ufrn.brenov.luanews.view.dialogs.RegistrationDialog;
@@ -19,7 +16,6 @@ import br.edu.ufrn.brenov.luanews.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
-    // Views
     private EditText edtUsername;
     private EditText edtPassword;
 
@@ -52,8 +48,7 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this,"No user has been registered\n!",Toast.LENGTH_SHORT).show();
                 } else {
                     if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
-                        Intent intent =  new Intent(this, HomeActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(this, HomeActivity.class));
                     } else {
                         Toast.makeText(this,"Wrong username or password!",Toast.LENGTH_SHORT).show();
                     }
@@ -74,25 +69,19 @@ public class MainActivity extends AppCompatActivity {
             User user = Auth.getUser(this);
             // Check if the user was registered
             if (user == null) {
-                Intent intent =  new Intent(this, RegisterActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(this, RegisterActivity.class));
             } else {
                 RegistrationDialog.show(getSupportFragmentManager(), new RegistrationDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if (i == DialogInterface.BUTTON_POSITIVE) {
-                            Intent intent =  new Intent(MainActivity.this, RegisterActivity.class);
-                            startActivity(intent);
+                            startActivity(new Intent(MainActivity.this, RegisterActivity.class));
                         }
                     }
                 });
             }
-        } catch (JSONException e) {
-            Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        } catch (IOException e) {
-            Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
+        } catch (Exception e) {
+            startActivity(new Intent(this, RegisterActivity.class));
         }
     }
 }

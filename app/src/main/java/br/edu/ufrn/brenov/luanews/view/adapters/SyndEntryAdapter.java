@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import com.sun.syndication.feed.synd.SyndEntry;
 import java.util.List;
-
 import br.edu.ufrn.brenov.luanews.R;
 
 public class SyndEntryAdapter extends BaseAdapter {

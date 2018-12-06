@@ -65,11 +65,11 @@ public class BaseActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+        // Handle navigation view news_item clicks here.
         if (!item.isChecked()) {
             int id = item.getItemId();
             Intent intent = null;
-            // Check selected item
+            // Check selected news_item
             if (id == R.id.nav_home) {
                 intent = new Intent(this, HomeActivity.class);
             } else if (id == R.id.nav_newspapers) {

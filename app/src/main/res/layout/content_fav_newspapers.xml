@@ -9,4 +9,10 @@
     tools:context=".view.activities.FavNewspapersActivity"
     tools:showIn="@layout/app_bar_fav_newspapers">
 
+    <ListView
+        android:id="@+id/list_of_fav_digital_newspapers"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </ListView>
+
 </android.support.constraint.ConstraintLayout>

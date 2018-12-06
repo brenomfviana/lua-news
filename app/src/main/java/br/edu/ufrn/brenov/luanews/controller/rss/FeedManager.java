@@ -14,17 +14,21 @@ public class FeedManager {
     public static List<SyndFeed> update(List<RSSChannel> channels, Context context) {
         // Initialize feed
         List<SyndFeed> feeds = new ArrayList<>();
-        // Get news
-        SyndFeed feed = null;
-        try {
-            RSSFeedTask task = new RSSFeedTask(context);
-            feed = task.execute(channels.get(0).getLink()).get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+        if (!channels.isEmpty()) {
+            for (RSSChannel rssc : channels) {
+                // Get news
+                SyndFeed feed = null;
+                try {
+                    RSSFeedTask task = new RSSFeedTask(context);
+                    feed = task.execute(rssc.getLink()).get();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                }
+                feeds.add(feed);
+            }
         }
-        feeds.add(feed);
         return feeds;
     }
 }

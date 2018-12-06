@@ -11,7 +11,7 @@ public class AboutActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         super.onCreateDrawer();
-        // Update checked item
+        // Update checked news_item
         this.navigationView.getMenu().getItem(5).setChecked(true);
     }
 }

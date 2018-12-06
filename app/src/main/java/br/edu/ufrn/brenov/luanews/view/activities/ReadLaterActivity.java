@@ -11,7 +11,7 @@ public class ReadLaterActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_later);
         super.onCreateDrawer();
-        // Update checked item
+        // Update checked news_item
         this.navigationView.getMenu().getItem(4).setChecked(true);
     }
 }
