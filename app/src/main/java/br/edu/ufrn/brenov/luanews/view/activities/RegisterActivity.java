@@ -51,19 +51,15 @@ public class RegisterActivity extends AppCompatActivity {
                     }
                 });
             }
-        } catch (JSONException e) {
-            Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
-        } catch (IOException e) {
-            Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
-            e.printStackTrace();
+        } catch (Exception e) {
+            //
         }
         return answer[0];
     }
 
     public void register(View view) {
         // Check user registration,
-        if (checkUserRegistration()) {
+        if (!checkUserRegistration()) {
             // Get values
             String username = this.edtUsername.getText().toString();
             String password = this.edtPassword.getText().toString();
