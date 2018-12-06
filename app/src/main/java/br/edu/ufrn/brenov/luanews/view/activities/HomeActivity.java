@@ -1,28 +1,30 @@
 package br.edu.ufrn.brenov.luanews.view.activities;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-
-import com.sun.syndication.feed.synd.SyndEntry;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
+import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
 import br.edu.ufrn.brenov.luanews.R;
+import br.edu.ufrn.brenov.luanews.view.adapters.NewsAdapter;
 import br.edu.ufrn.brenov.luanews.view.fragments.NewsFragment;
 import br.edu.ufrn.brenov.luanews.view.notification.NotificationReceiver;
 import br.edu.ufrn.brenov.luanews.view.notification.NotificationUtils;
 
-public class HomeActivity extends BaseActivity implements NewsFragment.OnItemClickListener {
+public class HomeActivity extends BaseActivity implements NewsAdapter.OnClickReadLaterListener,
+        NewsAdapter.OnClickListener {
 
-    private AlarmManager manager;
+    private EditText edtSearch;
+    private OnTyppingListener typpingListener;
+    private OnClickReadLaterListener readLaterListener;
+    private OnClickListener listener;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -33,6 +35,28 @@ public class HomeActivity extends BaseActivity implements NewsFragment.OnItemCli
         // Update title
         setTitle("");
         this.navigationView.getMenu().getItem(0).setChecked(true);
+        // Get views
+        Fragment frag = getSupportFragmentManager().findFragmentById(R.id.home_fragment);
+        this.typpingListener = (NewsFragment) frag;
+        this.readLaterListener = (NewsFragment) frag;
+        this.listener = (NewsFragment) frag;
+        this.edtSearch = findViewById(R.id.edt_search);
+        this.edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Empty
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                typpingListener.onTypping(edtSearch.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // Empty
+            }
+        });
         // Create a notification
         Notification.Builder builder = new Notification.Builder(this,
                 NotificationUtils.getChannelId(this));
@@ -66,19 +90,24 @@ public class HomeActivity extends BaseActivity implements NewsFragment.OnItemCli
     }
 
     @Override
-    public void onClick(SyndEntry entry) {
-        Intent intent = new Intent(this, NewsActivity.class);
-        intent.putExtra("news_link", entry.getLink());
-        intent.putExtra("news_title", entry.getTitle());
-        intent.putExtra("news_description", entry.getDescription().getValue());
-        if (entry.getAuthor().equals("")) {
-            intent.putExtra("news_author", "N/A");
-        } else {
-            intent.putExtra("news_author", entry.getAuthor());
-        }
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String date = format.format(entry.getPublishedDate());
-        intent.putExtra("news_date", date);
-        startActivity(intent);
+    public void onClickReadLater(int i) {
+        this.readLaterListener.onClickReadLater(i);
+    }
+
+    @Override
+    public void onClick(int i) {
+        this.listener.onClick(i);
+    }
+
+    public interface OnTyppingListener {
+        void onTypping(String text);
+    }
+
+    public interface OnClickReadLaterListener {
+        void onClickReadLater(int i);
+    }
+
+    public interface OnClickListener {
+        void onClick(int i);
     }
 }

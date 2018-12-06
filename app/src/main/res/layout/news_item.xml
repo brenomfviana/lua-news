@@ -16,7 +16,7 @@
         style="?android:textAppearanceMedium" />
 
     <ImageView
-        android:id="@+id/news_fav"
+        android:id="@+id/news_read_later"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
@@ -25,20 +25,6 @@
         android:paddingLeft="8dp"
         android:layout_alignRight="@id/news_text"
         android:layout_alignBottom="@id/news_text"
-        app:srcCompat="@drawable/ic_favorite_border_black_24dp" />
-
-    <ImageView
-        android:id="@+id/news_read_later"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@id/news_fav"
-        android:layout_alignBottom="@id/news_text"
-        android:layout_marginLeft="-38dp"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
         app:srcCompat="@drawable/ic_access_time_black_24dp" />
-
 
 </RelativeLayout>

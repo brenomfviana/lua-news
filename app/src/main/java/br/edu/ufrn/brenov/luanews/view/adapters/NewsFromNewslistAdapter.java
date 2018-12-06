@@ -6,16 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import com.sun.syndication.feed.synd.SyndEntry;
 import java.util.List;
 import br.edu.ufrn.brenov.luanews.R;
+import br.edu.ufrn.brenov.luanews.model.News;
 
-public class SyndEntryAdapter extends BaseAdapter {
+public class NewsFromNewslistAdapter extends BaseAdapter {
 
-    private List<SyndEntry> items;
+    private List<News> items;
     private Context context;
 
-    public SyndEntryAdapter(Context context, List<SyndEntry> items) {
+    public NewsFromNewslistAdapter(Context context, List<News> items) {
         this.context = context;
         this.items = items;
     }
@@ -26,7 +26,7 @@ public class SyndEntryAdapter extends BaseAdapter {
     }
 
     @Override
-    public SyndEntry getItem(int i) {
+    public News getItem(int i) {
         return this.items.get(i);
     }
 
@@ -37,7 +37,7 @@ public class SyndEntryAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = LayoutInflater.from(context).inflate(R.layout.news_item, viewGroup, false);
+        view = LayoutInflater.from(context).inflate(R.layout.news_item_list, viewGroup, false);
         TextView title = view.findViewById(R.id.news_text);
         title.setText(this.items.get(i).getTitle());
         return view;

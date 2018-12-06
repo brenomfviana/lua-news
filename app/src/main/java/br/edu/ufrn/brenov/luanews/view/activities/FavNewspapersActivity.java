@@ -1,5 +1,6 @@
 package br.edu.ufrn.brenov.luanews.view.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -12,7 +13,8 @@ import br.edu.ufrn.brenov.luanews.controller.database.rss.RSSDatabase;
 import br.edu.ufrn.brenov.luanews.model.RSSChannel;
 import br.edu.ufrn.brenov.luanews.view.adapters.RSSChannelAdapter;
 
-public class FavNewspapersActivity extends BaseActivity implements RSSChannelAdapter.OnClickFavListener, RSSChannelAdapter.OnClickRemoveListener {
+public class FavNewspapersActivity extends BaseActivity implements RSSChannelAdapter.OnClickFavListener,
+        RSSChannelAdapter.OnClickRemoveListener, RSSChannelAdapter.OnClickListener {
 
     private ListView list;
     private List<RSSChannel> channels;
@@ -42,7 +44,8 @@ public class FavNewspapersActivity extends BaseActivity implements RSSChannelAda
             Toast.makeText(this, "Error while reading RSS feeds.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        this.adapter = new RSSChannelAdapter(this, this.channels, this, this);
+        this.adapter = new RSSChannelAdapter(this, this.channels, this, this,
+                this, true);
         this.list.setAdapter(this.adapter);
     }
 
@@ -67,5 +70,12 @@ public class FavNewspapersActivity extends BaseActivity implements RSSChannelAda
     @Override
     public void onClickRemove(int i) {
         // Empty
+    }
+
+    @Override
+    public void onClick(int i) {
+        Intent intent = new Intent(this, NewsFromFeedActivity.class);
+        intent.putExtra("link", this.adapter.getItem(i).getLink());
+        startActivity(intent);
     }
 }

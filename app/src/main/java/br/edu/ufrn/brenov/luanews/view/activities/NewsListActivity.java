@@ -14,12 +14,12 @@ import java.io.IOException;
 import br.edu.ufrn.brenov.luanews.R;
 import br.edu.ufrn.brenov.luanews.controller.database.news.NewsListDatabase;
 import br.edu.ufrn.brenov.luanews.model.NewsList;
-import br.edu.ufrn.brenov.luanews.view.adapters.NewsAdapter;
+import br.edu.ufrn.brenov.luanews.view.adapters.NewsFromNewslistAdapter;
 
 public class NewsListActivity extends AppCompatActivity {
 
     private ListView list;
-    private NewsAdapter adapter;
+    private NewsFromNewslistAdapter adapter;
     private NewsList nl;
 
     @Override
@@ -46,7 +46,7 @@ public class NewsListActivity extends AppCompatActivity {
             Toast.makeText(this, "List record error.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        this.adapter = new NewsAdapter(this, this.nl.getNewslist());
+        this.adapter = new NewsFromNewslistAdapter(this, this.nl.getNewslist());
         this.list.setAdapter(this.adapter);
     }
 

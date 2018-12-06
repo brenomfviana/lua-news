@@ -1,42 +1,39 @@
 package br.edu.ufrn.brenov.luanews.view.fragments;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import org.json.JSONException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import br.edu.ufrn.brenov.luanews.R;
 import br.edu.ufrn.brenov.luanews.controller.database.rss.RSSDatabase;
 import br.edu.ufrn.brenov.luanews.controller.rss.FeedManager;
 import br.edu.ufrn.brenov.luanews.model.RSSChannel;
-import br.edu.ufrn.brenov.luanews.view.adapters.SyndEntryAdapter;
+import br.edu.ufrn.brenov.luanews.view.activities.HomeActivity;
+import br.edu.ufrn.brenov.luanews.view.activities.NewsActivity;
+import br.edu.ufrn.brenov.luanews.view.adapters.NewsAdapter;
 
-public class NewsFragment extends Fragment {
+import static br.edu.ufrn.brenov.luanews.view.activities.HomeActivity.*;
+
+public class NewsFragment extends Fragment implements OnTyppingListener,
+    OnClickReadLaterListener, OnClickListener {
 
     private ViewGroup container;
     private List<RSSChannel> channels;
     private List<SyndFeed> feeds;
-    private OnItemClickListener listener;
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        // Show exception
-        if (!(context instanceof OnItemClickListener)) {
-            throw new RuntimeException("The context must be OnItemClick.");
-        }
-        this.listener = (OnItemClickListener) context;
-    }
+    private List<SyndEntry> items;
+    private List<SyndEntry> allItems;
+    private NewsAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,27 +65,50 @@ public class NewsFragment extends Fragment {
             this.feeds = FeedManager.update(this.channels, getContext());
         } else {
             // Show all news
-            List<SyndEntry> items = new ArrayList<>();
+            this.items = new ArrayList<>();
+            this.allItems = new ArrayList<>();
             for (Object entry : this.feeds.get(0).getEntries()) {
                 SyndEntry e = (SyndEntry) entry;
-                items.add(e);
+                this.items.add(e);
+                this.allItems.add(e);
             }
-            SyndEntryAdapter adapter = new SyndEntryAdapter(getContext(), items);
+            this.adapter = new NewsAdapter(getContext(), this.items,
+                    (HomeActivity) getContext(), (HomeActivity) getContext());
             ListView listView = (ListView) getView();
             listView.setAdapter(adapter);
-            // Set news_item click method
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapter, View view, int i, long l) {
-                    if (listener != null) {
-                        listener.onClick((SyndEntry) adapter.getAdapter().getItem(i));
-                    }
-                }
-            });
         }
     }
 
-    public interface OnItemClickListener {
-        void onClick(SyndEntry entry);
+    @Override
+    public void onTypping(String text) {
+        this.items.clear();
+        for (SyndEntry entry : this.allItems) {
+            if (entry.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                this.items.add(entry);
+            }
+        }
+        this.adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClickReadLater(int i) {
+    }
+
+    @Override
+    public void onClick(int i) {
+        SyndEntry entry = this.items.get(i);
+        Intent intent = new Intent(getContext(), NewsActivity.class);
+        intent.putExtra("news_link", entry.getLink());
+        intent.putExtra("news_title", entry.getTitle());
+        intent.putExtra("news_description", entry.getDescription().getValue());
+        if (entry.getAuthor().equals("")) {
+            intent.putExtra("news_author", "N/A");
+        } else {
+            intent.putExtra("news_author", entry.getAuthor());
+        }
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String date = format.format(entry.getPublishedDate());
+        intent.putExtra("news_date", date);
+        startActivity(intent);
     }
 }

@@ -15,7 +15,7 @@ import br.edu.ufrn.brenov.luanews.model.RSSChannel;
 import br.edu.ufrn.brenov.luanews.view.adapters.RSSChannelAdapter;
 
 public class DigitalNewspapersActivity extends BaseActivity implements RSSChannelAdapter.OnClickFavListener,
-        RSSChannelAdapter.OnClickRemoveListener {
+        RSSChannelAdapter.OnClickRemoveListener, RSSChannelAdapter.OnClickListener {
 
     private ListView list;
     private List<RSSChannel> channels;
@@ -40,7 +40,8 @@ public class DigitalNewspapersActivity extends BaseActivity implements RSSChanne
             Toast.makeText(this, "Error while reading RSS feeds.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        this.adapter = new RSSChannelAdapter(this, this.channels, this, this);
+        this.adapter = new RSSChannelAdapter(this, this.channels, this, this,
+                this, false);
         this.list.setAdapter(this.adapter);
     }
 
@@ -57,7 +58,8 @@ public class DigitalNewspapersActivity extends BaseActivity implements RSSChanne
             Toast.makeText(this, "Error while reading RSS feeds.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-        this.adapter = new RSSChannelAdapter(this, this.channels, this, this);
+        this.adapter = new RSSChannelAdapter(this, this.channels, this, this,
+                this, false);
         this.list.setAdapter(this.adapter);
     }
 
@@ -110,5 +112,12 @@ public class DigitalNewspapersActivity extends BaseActivity implements RSSChanne
             Toast.makeText(this, "Error while removing RSS feeds.", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onClick(int i) {
+        Intent intent = new Intent(this, NewsFromFeedActivity.class);
+        intent.putExtra("link", this.adapter.getItem(i).getLink());
+        startActivity(intent);
     }
 }

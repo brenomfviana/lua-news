@@ -11,7 +11,6 @@ import android.widget.TextView;
 import java.util.List;
 import br.edu.ufrn.brenov.luanews.R;
 import br.edu.ufrn.brenov.luanews.model.NewsList;
-import br.edu.ufrn.brenov.luanews.view.activities.NewsListActivity;
 
 public class NewsListAdapter extends BaseAdapter {
 

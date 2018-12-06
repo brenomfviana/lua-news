@@ -17,13 +17,18 @@ public class RSSChannelAdapter extends BaseAdapter {
     private Context context;
     private OnClickFavListener favListener;
     private OnClickRemoveListener removeListener;
+    private OnClickListener listener;
+    private boolean hideRemove;
 
     public RSSChannelAdapter(Context context, List<RSSChannel> items, OnClickFavListener favListener,
-                             OnClickRemoveListener removeListener) {
+                             OnClickRemoveListener removeListener, OnClickListener listener,
+                             boolean hideRemove) {
         this.context = context;
         this.items = items;
         this.favListener = favListener;
         this.removeListener = removeListener;
+        this.listener = listener;
+        this.hideRemove = hideRemove;
     }
 
     @Override
@@ -50,6 +55,12 @@ public class RSSChannelAdapter extends BaseAdapter {
         view = LayoutInflater.from(context).inflate(R.layout.item, viewGroup, false);
         TextView title = view.findViewById(R.id.item_text);
         title.setText(this.items.get(i).getName());
+        title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClick(i);
+            }
+        });
         ImageView fav = view.findViewById(R.id.item_fav);
         if (items.get(i).isFav()) {
             fav.setImageResource(R.drawable.ic_favorite_black_24dp);
@@ -69,6 +80,9 @@ public class RSSChannelAdapter extends BaseAdapter {
                 removeListener.onClickRemove(i);
             }
         });
+        if (this.hideRemove) {
+            remove.setVisibility(View.GONE);
+        }
         return view;
     }
 
@@ -78,5 +92,9 @@ public class RSSChannelAdapter extends BaseAdapter {
 
     public interface OnClickRemoveListener {
         void onClickRemove(int i);
+    }
+
+    public interface OnClickListener {
+        void onClick(int i);
     }
 }
