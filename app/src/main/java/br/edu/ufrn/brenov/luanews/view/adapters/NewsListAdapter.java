@@ -1,13 +1,13 @@
 package br.edu.ufrn.brenov.luanews.view.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.util.ArrayList;
 import java.util.List;
 import br.edu.ufrn.brenov.luanews.R;
 import br.edu.ufrn.brenov.luanews.model.NewsList;
@@ -27,11 +27,14 @@ public class NewsListAdapter extends BaseAdapter {
         this.editListener = editListener;
         this.removeListener = removeListener;
         this.listener = listener;
+        if (this.items == null) {
+            this.items = new ArrayList<>();
+        }
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        return this.items.size();
     }
 
     @Override

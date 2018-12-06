@@ -8,11 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import org.json.JSONException;
-
 import java.io.IOException;
-
 import br.edu.ufrn.brenov.luanews.R;
 import br.edu.ufrn.brenov.luanews.controller.database.rss.RSSDatabase;
 import br.edu.ufrn.brenov.luanews.model.RSSChannel;

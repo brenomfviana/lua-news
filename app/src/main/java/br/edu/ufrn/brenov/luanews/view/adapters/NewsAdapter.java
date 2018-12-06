@@ -7,19 +7,23 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.sun.syndication.feed.synd.SyndEntry;
+import android.widget.Toast;
+import org.json.JSONException;
+import java.io.IOException;
 import java.util.List;
 import br.edu.ufrn.brenov.luanews.R;
+import br.edu.ufrn.brenov.luanews.controller.database.news.ReadLaterDatabase;
+import br.edu.ufrn.brenov.luanews.model.News;
 
 public class NewsAdapter extends BaseAdapter {
 
-    private List<SyndEntry> items;
+    private List<News> items;
     private Context context;
     private OnClickReadLaterListener readLaterListener;
     private OnClickListener listener;
 
-    public NewsAdapter(Context context, List<SyndEntry> items, OnClickReadLaterListener readLaterListener,
-            OnClickListener listener) {
+    public NewsAdapter(Context context, List<News> items, OnClickReadLaterListener readLaterListener,
+                       OnClickListener listener) {
         this.context = context;
         this.items = items;
         this.readLaterListener= readLaterListener;
@@ -32,7 +36,7 @@ public class NewsAdapter extends BaseAdapter {
     }
 
     @Override
-    public SyndEntry getItem(int i) {
+    public News getItem(int i) {
         return this.items.get(i);
     }
 
@@ -59,6 +63,21 @@ public class NewsAdapter extends BaseAdapter {
                 readLaterListener.onClickReadLater(i);
             }
         });
+        // Get read later
+        try {
+            for (News n : ReadLaterDatabase.getNews(this.context)) {
+                if (this.items.get(i).getLink().equals(n.getLink())) {
+                    readLater.setImageResource(R.drawable.ic_access_time_selected_24dp);
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            Toast.makeText(context, "Read later record error.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        } catch (IOException e) {
+            Toast.makeText(context, "Read later record error.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
         return view;
     }
 

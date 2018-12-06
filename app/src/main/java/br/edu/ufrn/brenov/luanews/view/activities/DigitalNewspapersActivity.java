@@ -48,6 +48,8 @@ public class DigitalNewspapersActivity extends BaseActivity implements RSSChanne
     @Override
     protected void onRestart() {
         super.onRestart();
+        // Update checked news_item
+        this.navigationView.getMenu().getItem(1).setChecked(true);
         // Get news
         try {
             this.channels = RSSDatabase.getRSSChannels(this);

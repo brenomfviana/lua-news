@@ -16,18 +16,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import br.edu.ufrn.brenov.luanews.R;
+import br.edu.ufrn.brenov.luanews.controller.database.news.ReadLaterDatabase;
 import br.edu.ufrn.brenov.luanews.controller.database.rss.RSSDatabase;
 import br.edu.ufrn.brenov.luanews.controller.rss.FeedManager;
+import br.edu.ufrn.brenov.luanews.model.News;
 import br.edu.ufrn.brenov.luanews.model.RSSChannel;
 import br.edu.ufrn.brenov.luanews.view.adapters.NewsAdapter;
 
 public class NewsFromFeedActivity extends AppCompatActivity implements NewsAdapter.OnClickReadLaterListener,
-    NewsAdapter.OnClickListener {
+        NewsAdapter.OnClickListener {
 
     private ListView list;
-    private List<SyndEntry> items;
     private List<RSSChannel> channel;
     private List<SyndFeed> feed;
+    private List<News> items;
+    private NewsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,32 +63,47 @@ public class NewsFromFeedActivity extends AppCompatActivity implements NewsAdapt
         this.items = new ArrayList<>();
         for (Object entry : this.feed.get(0).getEntries()) {
             SyndEntry e = (SyndEntry) entry;
-            items.add(e);
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            String date = format.format(e.getPublishedDate());
+            this.items.add(new News(e.getLink(), e.getTitle(), e.getAuthor(),
+                    e.getDescription().getValue(), date));
         }
-        NewsAdapter adapter = new NewsAdapter(this, items, this,
-                this);
-        this.list.setAdapter(adapter);
+        this.adapter = new NewsAdapter(this, this.items, this, this);
+        this.list.setAdapter(this.adapter);
     }
 
     @Override
     public void onClickReadLater(int i) {
+        News news = this.items.get(i);
+        try {
+            if (ReadLaterDatabase.contains(news, this)) {
+                ReadLaterDatabase.remove(news, this);
+            } else {
+                ReadLaterDatabase.add(news, this);
+            }
+        } catch (JSONException e) {
+            Toast.makeText(this, "Read later record error.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        } catch (IOException e) {
+            Toast.makeText(this, "Read later record error.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        this.adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onClick(int i) {
-        SyndEntry entry = this.items.get(i);
+        News news = this.items.get(i);
         Intent intent = new Intent(this, NewsActivity.class);
-        intent.putExtra("news_link", entry.getLink());
-        intent.putExtra("news_title", entry.getTitle());
-        intent.putExtra("news_description", entry.getDescription().getValue());
-        if (entry.getAuthor().equals("")) {
+        intent.putExtra("news_link", news.getLink());
+        intent.putExtra("news_title", news.getTitle());
+        intent.putExtra("news_description", news.getDescription());
+        if (news.getAuthor().equals("")) {
             intent.putExtra("news_author", "N/A");
         } else {
-            intent.putExtra("news_author", entry.getAuthor());
+            intent.putExtra("news_author", news.getAuthor());
         }
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String date = format.format(entry.getPublishedDate());
-        intent.putExtra("news_date", date);
+        intent.putExtra("news_date", news.getPublishedDate());
         startActivity(intent);
     }
 }

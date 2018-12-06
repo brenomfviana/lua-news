@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import br.edu.ufrn.brenov.luanews.R;
 
 public class BaseActivity extends AppCompatActivity

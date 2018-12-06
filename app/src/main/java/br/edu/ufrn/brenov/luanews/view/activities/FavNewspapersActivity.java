@@ -50,6 +50,13 @@ public class FavNewspapersActivity extends BaseActivity implements RSSChannelAda
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        // Update checked news_item
+        this.navigationView.getMenu().getItem(2).setChecked(true);
+    }
+
+    @Override
     public void onClickFav(int i) {
         try {
             this.channels.get(i).setFav(!this.channels.get(i).isFav());

@@ -12,7 +12,11 @@ import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.Toast;
+import org.json.JSONException;
+import java.io.IOException;
 import br.edu.ufrn.brenov.luanews.R;
+import br.edu.ufrn.brenov.luanews.controller.database.news.ReadLaterDatabase;
 import br.edu.ufrn.brenov.luanews.view.adapters.NewsAdapter;
 import br.edu.ufrn.brenov.luanews.view.fragments.NewsFragment;
 import br.edu.ufrn.brenov.luanews.view.notification.NotificationReceiver;
@@ -46,47 +50,58 @@ public class HomeActivity extends BaseActivity implements NewsAdapter.OnClickRea
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 // Empty
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 typpingListener.onTypping(edtSearch.getText().toString());
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
                 // Empty
             }
         });
         // Create a notification
-        Notification.Builder builder = new Notification.Builder(this,
-                NotificationUtils.getChannelId(this));
-        builder.setSmallIcon(android.R.drawable.ic_dialog_alert);
-        // Content
-        Notification.BigTextStyle style = new Notification.BigTextStyle()
-                .setBigContentTitle("See the read later list.")
-                .bigText("You have news to read.");
-        builder.setStyle(style);
-        // Actions
-        Intent intent1 = new Intent(this, NotificationReceiver.class);
-        intent1.setAction(NotificationReceiver.ACTION_BUTTON_1);
-        PendingIntent pia1 = PendingIntent.getBroadcast(this,1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
-        Intent intent2 = new Intent(this, NotificationReceiver.class);
-        intent2.setAction(NotificationReceiver.ACTION_BUTTON_2);
-        PendingIntent pia2 = PendingIntent.getBroadcast(this,2, intent2,0);
-        Icon icon = Icon.createWithResource(this, android.R.drawable.ic_menu_view);
-        Notification.Action action1 = new Notification.Action.Builder(icon,"See now", pia1).build();
-        Notification.Action action2 = new Notification.Action.Builder(icon,"Ignore", pia2).build();
-        builder.addAction(action1);
-        builder.addAction(action2);
-        // Show notification
-        Notification notification = builder.build();
-        NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        nm.notify(50, notification);
+        try {
+            if (!ReadLaterDatabase.getNews(this).isEmpty()) {
+                // Create a notification
+                Notification.Builder builder = new Notification.Builder(this,
+                        NotificationUtils.getChannelId(this));
+                builder.setSmallIcon(android.R.drawable.ic_dialog_alert);
+                // Content
+                Notification.BigTextStyle style = new Notification.BigTextStyle()
+                        .setBigContentTitle("See the read later list.")
+                        .bigText("You have news to read.");
+                builder.setStyle(style);
+                // Actions
+                Intent intent1 = new Intent(this, NotificationReceiver.class);
+                intent1.setAction(NotificationReceiver.ACTION_BUTTON_1);
+                PendingIntent pia1 = PendingIntent.getBroadcast(this,1, intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+                Intent intent2 = new Intent(this, NotificationReceiver.class);
+                intent2.setAction(NotificationReceiver.ACTION_BUTTON_2);
+                PendingIntent pia2 = PendingIntent.getBroadcast(this,2, intent2,0);
+                Icon icon = Icon.createWithResource(this, android.R.drawable.ic_menu_view);
+                Notification.Action action1 = new Notification.Action.Builder(icon,"See now", pia1).build();
+                Notification.Action action2 = new Notification.Action.Builder(icon,"Ignore", pia2).build();
+                builder.addAction(action1);
+                builder.addAction(action2);
+                // Show notification
+                Notification notification = builder.build();
+                NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                nm.notify(50, notification);
+            }
+        } catch (JSONException e) {
+            Toast.makeText(this, "Read later record error.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        } catch (IOException e) {
+            Toast.makeText(this, "Read later record error.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onRestart() {
+        super.onRestart();
+        // Update checked news_item
+        this.navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     @Override

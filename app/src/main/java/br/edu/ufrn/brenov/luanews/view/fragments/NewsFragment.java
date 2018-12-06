@@ -16,13 +16,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import br.edu.ufrn.brenov.luanews.R;
+import br.edu.ufrn.brenov.luanews.controller.database.news.ReadLaterDatabase;
 import br.edu.ufrn.brenov.luanews.controller.database.rss.RSSDatabase;
 import br.edu.ufrn.brenov.luanews.controller.rss.FeedManager;
+import br.edu.ufrn.brenov.luanews.model.News;
 import br.edu.ufrn.brenov.luanews.model.RSSChannel;
 import br.edu.ufrn.brenov.luanews.view.activities.HomeActivity;
 import br.edu.ufrn.brenov.luanews.view.activities.NewsActivity;
 import br.edu.ufrn.brenov.luanews.view.adapters.NewsAdapter;
-
 import static br.edu.ufrn.brenov.luanews.view.activities.HomeActivity.*;
 
 public class NewsFragment extends Fragment implements OnTyppingListener,
@@ -31,8 +32,8 @@ public class NewsFragment extends Fragment implements OnTyppingListener,
     private ViewGroup container;
     private List<RSSChannel> channels;
     private List<SyndFeed> feeds;
-    private List<SyndEntry> items;
-    private List<SyndEntry> allItems;
+    private List<News> items;
+    private List<News> allItems;
     private NewsAdapter adapter;
 
     @Override
@@ -69,8 +70,12 @@ public class NewsFragment extends Fragment implements OnTyppingListener,
             this.allItems = new ArrayList<>();
             for (Object entry : this.feeds.get(0).getEntries()) {
                 SyndEntry e = (SyndEntry) entry;
-                this.items.add(e);
-                this.allItems.add(e);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                String date = format.format(e.getPublishedDate());
+                this.items.add(new News(e.getLink(), e.getTitle(), e.getAuthor(),
+                        e.getDescription().getValue(), date));
+                this.allItems.add(new News(e.getLink(), e.getTitle(), e.getAuthor(),
+                        e.getDescription().getValue(), date));
             }
             this.adapter = new NewsAdapter(getContext(), this.items,
                     (HomeActivity) getContext(), (HomeActivity) getContext());
@@ -82,9 +87,9 @@ public class NewsFragment extends Fragment implements OnTyppingListener,
     @Override
     public void onTypping(String text) {
         this.items.clear();
-        for (SyndEntry entry : this.allItems) {
-            if (entry.getTitle().toLowerCase().contains(text.toLowerCase())) {
-                this.items.add(entry);
+        for (News news : this.allItems) {
+            if (news.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                this.items.add(news);
             }
         }
         this.adapter.notifyDataSetChanged();
@@ -92,23 +97,36 @@ public class NewsFragment extends Fragment implements OnTyppingListener,
 
     @Override
     public void onClickReadLater(int i) {
+        News news = this.items.get(i);
+        try {
+            if (ReadLaterDatabase.contains(news, getContext())) {
+                ReadLaterDatabase.remove(news, getContext());
+            } else {
+                ReadLaterDatabase.add(news, getContext());
+            }
+        } catch (JSONException e) {
+            Toast.makeText(getContext(), "Read later record error.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        } catch (IOException e) {
+            Toast.makeText(getContext(), "Read later record error.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        this.adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onClick(int i) {
-        SyndEntry entry = this.items.get(i);
+        News news = this.items.get(i);
         Intent intent = new Intent(getContext(), NewsActivity.class);
-        intent.putExtra("news_link", entry.getLink());
-        intent.putExtra("news_title", entry.getTitle());
-        intent.putExtra("news_description", entry.getDescription().getValue());
-        if (entry.getAuthor().equals("")) {
+        intent.putExtra("news_link", news.getLink());
+        intent.putExtra("news_title", news.getTitle());
+        intent.putExtra("news_description", news.getDescription());
+        if (news.getAuthor().equals("")) {
             intent.putExtra("news_author", "N/A");
         } else {
-            intent.putExtra("news_author", entry.getAuthor());
+            intent.putExtra("news_author", news.getAuthor());
         }
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String date = format.format(entry.getPublishedDate());
-        intent.putExtra("news_date", date);
+        intent.putExtra("news_date", news.getPublishedDate());
         startActivity(intent);
     }
 }

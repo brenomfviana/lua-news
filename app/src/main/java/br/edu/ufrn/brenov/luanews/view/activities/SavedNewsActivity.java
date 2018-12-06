@@ -47,6 +47,8 @@ public class SavedNewsActivity extends BaseActivity implements NewsListAdapter.O
     @Override
     protected void onRestart() {
         super.onRestart();
+        // Update checked news_item
+        this.navigationView.getMenu().getItem(3).setChecked(true);
         // Get news
         try {
             this.nls = NewsListDatabase.getNewsLists(this);

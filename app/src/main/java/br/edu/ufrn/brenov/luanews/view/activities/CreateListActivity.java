@@ -9,9 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import org.json.JSONException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import br.edu.ufrn.brenov.luanews.R;

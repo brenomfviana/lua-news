@@ -7,9 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
-
 import org.json.JSONException;
-
 import java.io.IOException;
 import br.edu.ufrn.brenov.luanews.R;
 import br.edu.ufrn.brenov.luanews.controller.database.news.NewsListDatabase;
