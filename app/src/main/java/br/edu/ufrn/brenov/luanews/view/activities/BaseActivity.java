@@ -10,7 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+
 import br.edu.ufrn.brenov.luanews.R;
+import br.edu.ufrn.brenov.luanews.controller.database.auth.Auth;
 
 public class BaseActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -83,6 +90,15 @@ public class BaseActivity extends AppCompatActivity
                 intent = new Intent(this, AboutActivity.class);
             } else if (id == R.id.nav_logoff) {
                 // Remove file of login
+                try {
+                    Auth.logoff(this);
+                } catch (JSONException e) {
+                    Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
                 intent = new Intent(this, MainActivity.class);
             }
             startActivity(intent);

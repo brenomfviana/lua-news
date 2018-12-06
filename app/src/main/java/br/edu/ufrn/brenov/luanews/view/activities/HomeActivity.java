@@ -102,6 +102,7 @@ public class HomeActivity extends BaseActivity implements NewsAdapter.OnClickRea
         super.onRestart();
         // Update checked news_item
         this.navigationView.getMenu().getItem(0).setChecked(true);
+        this.edtSearch.setText("");
     }
 
     @Override

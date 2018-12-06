@@ -26,6 +26,18 @@ public class MainActivity extends AppCompatActivity {
         // Get views
         this.edtUsername = findViewById(R.id.edt_username);
         this.edtPassword = findViewById(R.id.edt_password);
+        // Check if the user is logged
+        try {
+            if (Auth.logged(this)) {
+                startActivity(new Intent(this, HomeActivity.class));
+            }
+        } catch (JSONException e) {
+            Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        } catch (IOException e) {
+            Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 
     public void login(View view) {
@@ -42,16 +54,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             try {
                 // Get registered user
-                User user = Auth.getUser(this);
+                User user = new User(username, password);
                 // Check if the user was registered
-                if (user == null) {
-                    Toast.makeText(this,"No user has been registered\n!",Toast.LENGTH_SHORT).show();
+                if (Auth.login(user, this)) {
+                    startActivity(new Intent(this, HomeActivity.class));
                 } else {
-                    if (username.equals(user.getUsername()) && password.equals(user.getPassword())) {
-                        startActivity(new Intent(this, HomeActivity.class));
-                    } else {
-                        Toast.makeText(this,"Wrong username or password!",Toast.LENGTH_SHORT).show();
-                    }
+                    Toast.makeText(this,"Wrong username or password!",Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
                 Toast.makeText(this, "Error in login file.", Toast.LENGTH_SHORT).show();
