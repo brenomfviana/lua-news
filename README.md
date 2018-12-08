@@ -34,3 +34,9 @@ Lua News is an Android application that uses RSS to gather news from electronic 
 [<img src="https://avatars2.githubusercontent.com/u/17532418?v=3&s=400" width="100"/>](https://github.com/brenov) |
 ---|
 [Breno Viana](https://github.com/brenov) |
+
+## Designer
+
+[<img src="https://mir-s3-cdn-cf.behance.net/user/138/11384f2804145.5566676e0acec.jpg" width="100"/>](https://www.behance.net/pedrocavalcante) |
+---|
+[Pedro Cavalcante](https://www.behance.net/pedrocavalcante) |
