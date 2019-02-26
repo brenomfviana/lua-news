@@ -1,6 +1,6 @@
 <p align="center"><img height="150px" src ="img/icon.png"/></p>
 
-# Lua News ![Buildkite](https://img.shields.io/buildkite/3826789cf8890b426057e6fe1c4e683bdf04fa24d498885489/master.svg) ![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)
+# Lua News
 
 ## Description
 
